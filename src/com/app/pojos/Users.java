@@ -96,7 +96,7 @@ public class Users {
 	}
 	public void setBuilds(int builds) {
 		this.builds = builds;
-	}
+	}	
 	@Enumerated(EnumType.STRING)
 	@Column(length = 20, name = "user_type")
 	public UserType getType() {
@@ -140,6 +140,20 @@ public class Users {
 	public void removeCard(Cart c) {
 		cart = null;
 		c.setUser(null);
+	}
+	
+	public void addBuild(Builds b)
+	{
+		System.out.println(b);
+		build.add(b);
+		b.setUser(this);
+	}
+	
+	public void removeBuild(Builds b)
+	{
+		System.out.println(b);
+		build.remove(b);
+		b.setUser(null);
 	}
 	
 	@Override

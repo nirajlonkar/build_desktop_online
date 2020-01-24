@@ -6,10 +6,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,23 +29,20 @@ public class AdminController {
 	@Autowired
 	private IAdminService service;;
 	
-	@GetMapping("/addcomponent")
-	private String showAddCompForm(Model map)
+	@PostMapping(value = "/add-component")
+	private ResponseEntity<?> processAddCompForm(@RequestBody Components c)
 	{
-		System.out.println("in add comp");
-		return "/admin/addcomponent";
-	}
-	
-	@PostMapping(value = "/addcomponent")
-	private String processAddCompForm(@RequestBody Components c)
-	{
-		
 		System.out.println("in process of add comp");
-		service.addComponent(c);
-		return "/admin/componentlist";
+		try {
+			return new ResponseEntity<Components>(service.addComponent(c),HttpStatus.CREATED);
+		} 
+		catch (RuntimeException e) {
+			e.printStackTrace();
+			return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 	
-	@GetMapping("/componentlist")
+	@GetMapping("/component-list")
 	public ResponseEntity<List<Components>> showComponentList()
 	{
 		List<Components> listAllComp = service.getAllComp();
@@ -53,7 +52,19 @@ public class AdminController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
-	@GetMapping("/userlist")
+	@GetMapping("/component-list/{type}")
+	public ResponseEntity<List<Components>> compListByType(@PathVariable String type)
+	{
+		System.out.println(type);
+		System.out.println("Inside comp list by type");
+		List<Components> listAllComp = service.getCompByType(type);
+		System.out.println(listAllComp);
+		if(listAllComp.size()!=0)
+			return new ResponseEntity<List<Components>>(listAllComp, HttpStatus.OK);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	@GetMapping("/user-list")
 	public ResponseEntity<List<Users>> showUsersList()
 	{
 		List<Users> listAllUser = service.getAllUsers();
@@ -62,9 +73,33 @@ public class AdminController {
 			return new ResponseEntity<List<Users>>(listAllUser, HttpStatus.OK);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
+	
+	@GetMapping("/{id}")
+	public ResponseEntity<?> listById(@PathVariable int id)
+	{
+		Components c = service.getById(id);
+		System.out.println(c);
+		if(c==null)
+			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+		return new ResponseEntity<Components>(c, HttpStatus.OK);
+
+	}
+	
+	@DeleteMapping("/{id}")
+	public void deleteComponent(@PathVariable int id)
+	{
+		System.out.println("in delete of "+id);
+		service.deleteComponent(id);
+	}
+	
+	@PutMapping("/{id}")
+	public ResponseEntity<?> editComponent(@RequestBody Components c, @PathVariable int id)
+	{
+		System.out.println("in edit component");
+		c = service.editComp(c,c.getId());
+		System.out.println("c");
+		if(c!=null)
+			return new ResponseEntity<Components>(HttpStatus.OK);
+		return new ResponseEntity<Void>(HttpStatus.NOT_MODIFIED);
+	}
 }
-
-
-//@RequestParam String name, @RequestParam String manufacturer, @RequestParam String model_no,
-//@RequestParam float price, @RequestParam ComponentType comp_type, @RequestParam byte[] desc,
-//HttpSession hs, RedirectAttributes flashMap

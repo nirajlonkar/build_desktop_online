@@ -18,20 +18,21 @@ public class Orders {
 	private float oprice;
 	private Date placed_date;
 	private Date delivery_date;
+	private String status;
 	private Users user;
 	
 	public Orders() {
 
 	}
-	
-	public Orders(Integer id, int build_id, float oprice, Date placed_date, Date delivery_date) {
+
+	public Orders(Integer id, int build_id, float oprice, Date placed_date, Date delivery_date, String status) {
 		super();
 		this.id = id;
-//		this.user_id = user_id;
 		this.build_id = build_id;
 		this.oprice = oprice;
 		this.placed_date = placed_date;
 		this.delivery_date = delivery_date;
+		this.status = status;
 	}
 
 	@Id
@@ -43,13 +44,6 @@ public class Orders {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-//	@Column(name = "user_id")
-//	public int getUser_id() {
-//		return user_id;
-//	}
-//	public void setUser_id(int user_id) {
-//		this.user_id = user_id;
-//	}
 	
 	public int getBuild_id() {
 		return build_id;
@@ -86,11 +80,23 @@ public class Orders {
 	public void setUser(Users user) {
 		this.user = user;
 	}
+	
+	@Column(name = "order_status")
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
 	@Override
 	public String toString() {
-		return "Orders [id=" + id + ", build_id=" + build_id + ", oprice=" + oprice
-				+ ", placed_date=" + placed_date + ", delivery_date=" + delivery_date + ", user=" + user + "]";
+		return "Orders [id=" + id + ", build_id=" + build_id + ", oprice=" + oprice + ", placed_date=" + placed_date
+				+ ", delivery_date=" + delivery_date + ", status=" + status + ", user=" + user + "]";
 	}
+
+	
 	
 	
 }

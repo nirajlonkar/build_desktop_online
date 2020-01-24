@@ -76,7 +76,7 @@ public class Components {
 		this.price = price;
 	}
 	
-	@Enumerated(EnumType.STRING)
+	@Enumerated( value = EnumType.STRING)
 	@Column(length = 30, name = "component_category")
 	public ComponentType getType() {
 		return type;

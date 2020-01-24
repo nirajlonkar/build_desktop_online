@@ -34,4 +34,33 @@ public class AdminService implements IAdminService {
 		return c;
 	}
 
+	@Override
+	public Components getById(int id) {
+		Components c = dao.compById(id);
+		return c;
+	}
+
+	@Override
+	public void deleteComponent(int id) {
+		Components c = dao.compById(id);
+		if(c!=null)
+			dao.removeComponent(c);
+	}
+
+	@Override
+	public Components editComp(Components c, int id) {
+		System.out.println("in edit service");
+		Components cOld = dao.compById(id);
+		c = dao.editComp(cOld,c);
+		return c;
+	}
+
+	@Override
+	public List<Components> getCompByType(String type) {
+		List<Components> listComp = dao.listByType(type);
+		return listComp;
+	}
+	
+	
+
 }
