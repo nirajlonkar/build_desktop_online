@@ -16,7 +16,7 @@ public class BuildDaoImpl implements IBuildDao{
 	
 	@Override
 	public Builds makeBuild(Users u) {
-		sf.getCurrentSession().persist(u);
+		sf.getCurrentSession().saveOrUpdate(u);
 		Builds b = null;
 		return b;
 	}

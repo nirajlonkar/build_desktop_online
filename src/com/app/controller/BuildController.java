@@ -27,6 +27,7 @@ public class BuildController {
 	
 	@Autowired
 	private IBuildService service;
+	@Autowired
 	private IUserService uservice;
 	
 	@PostMapping("/new/{id}")

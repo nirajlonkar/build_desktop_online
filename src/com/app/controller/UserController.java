@@ -33,12 +33,6 @@ public class UserController {
 		System.out.println("in init of "+ getClass().getName());
 	}
 	
-//	@GetMapping("/login")
-//	public String showLoginForm() {
-//		System.out.println("Showing login form");
-//		return "/user/login";
-//	}
-	
 	@PostMapping("/login")
 	public Users processLoginForm(@RequestBody Users u, HttpSession hs)
 	{
