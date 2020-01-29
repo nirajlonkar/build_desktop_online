@@ -1,5 +1,8 @@
 package com.app.services;
 
+import java.util.List;
+
+import com.app.pojos.Orders;
 import com.app.pojos.Users;
 
 public interface IUserService {
@@ -9,6 +12,8 @@ public interface IUserService {
 	Users getById(int id);
 	void deleteUser(int id);
 	Users editUser(Users u, int id);
-	
+	Orders addOrder(Users u);
+	List<Orders> ordersByUserId(int id);
+	List<Orders> allOrders();
 }
 

@@ -7,7 +7,10 @@ import com.app.pojos.Users;
 
 public interface IBuildService {
 
-	Builds newBuild(Users u);
+	String newBuild(Users u);
 	List<Builds> getAllBuilds();
 	List<Builds> getBuildById(int id);
+	void deleteBuild(int id, int uid);
+	Builds getBuild(int id);
+	
 }

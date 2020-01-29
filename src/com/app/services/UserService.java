@@ -1,10 +1,13 @@
 package com.app.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.app.dao.IUserDao;
+import com.app.pojos.Orders;
 import com.app.pojos.Users;
 @Service
 @Transactional
@@ -47,6 +50,21 @@ public class UserService implements IUserService {
 		Users uOld = dao.userById(id);
 		u = dao.editProfile(uOld, u);
 		return u;
+	}
+	@Override
+	public Orders addOrder(Users u) {
+		System.out.println("inside service add order");
+		return dao.addOrder(u);
+	}
+	@Override
+	public List<Orders> ordersByUserId(int id) {
+		List<Orders> orderList = dao.byUserID(id);
+		return orderList;
+	}
+	@Override
+	public List<Orders> allOrders() {
+		List<Orders> orderList = dao.allOrders();
+		return orderList;
 	}
 	
 

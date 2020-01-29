@@ -13,9 +13,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -39,8 +40,6 @@ public class Users {
 	private List<Builds> build = new ArrayList<>();
 	@JsonIgnore
 	private List<Orders> order = new ArrayList<>();
-	@JsonIgnore
-	private Cart cart;
 	public Users() {
 	}
 	
@@ -108,6 +107,7 @@ public class Users {
 	}
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+	@Fetch(FetchMode.SUBSELECT)
 	public List<Builds> getBuild() {
 		return build;
 	}
@@ -116,7 +116,8 @@ public class Users {
 		this.build = build;
 	}
 	
-	@OneToMany (mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany (mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+	@Fetch(FetchMode.SUBSELECT)
 	public List<Orders> getOrder() {
 		return order;
 	}
@@ -124,30 +125,14 @@ public class Users {
 	public void setOrder(List<Orders> order) {
 		this.order = order;
 	}
-	@OneToOne (mappedBy = "user", cascade = CascadeType.ALL)
-	public Cart getCart() {
-		return cart;
-	}
-
-	public void setCart(Cart cart) {
-		this.cart = cart;
-	}
-	//convenience methods
-	public void addCart(Cart c)
-	{
-		this.cart = c;
-		c.setUser(this);
-	}
-	public void removeCard(Cart c) {
-		cart = null;
-		c.setUser(null);
-	}
 	
 	public void addBuild(Builds b)
 	{
 		System.out.println(b);
 		build.add(b);
 		b.setUser(this);
+		System.out.println(b.getUser());
+		System.out.println(build);
 	}
 	
 	public void removeBuild(Builds b)
@@ -156,6 +141,13 @@ public class Users {
 		build.remove(b);
 		b.setUser(null);
 	}
+	public void placeOrder(Orders o)
+	{
+		System.out.println(o);
+		order.add(o);
+		o.setUser(this);
+	}
+	
 	
 	@Override
 	public String toString() {

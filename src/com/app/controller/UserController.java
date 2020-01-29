@@ -1,5 +1,7 @@
 package com.app.controller;
 
+import java.util.List;
+
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpSession;
 
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.app.pojos.Components;
+import com.app.pojos.Orders;
 import com.app.pojos.Users;
 import com.app.services.IUserService;
 
@@ -27,6 +30,7 @@ public class UserController {
 	
 	@Autowired
 	private IUserService service;
+	
 	
 	@PostConstruct
 	public void myInit() {
@@ -89,6 +93,60 @@ public class UserController {
 		return new ResponseEntity<Users>(u, HttpStatus.OK);
 
 	}
+	@PostMapping("/order/{id}")
+	private ResponseEntity<?> placeOrder(@RequestBody Orders o, HttpSession hs, @PathVariable int id)
+	{
+		System.out.println("in process of new order");
+		try {
+			System.out.println(id);
+			float totalPrice = o.getOprice()*o.getQty();
+			o.setOprice(totalPrice);
+			Users u = service.getById(id);
+			System.out.println(u);
+			u.placeOrder(o);
+			return new ResponseEntity<Orders>(service.addOrder(u),HttpStatus.CREATED);
+		} 
+		catch (RuntimeException e) {
+			e.printStackTrace();
+			return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@GetMapping("/order/list/{id}")
+	private ResponseEntity<?> orderList(@PathVariable int id)
+	{
+		System.out.println("int order list");
+		List<Orders> listAllOrders = service.ordersByUserId(id);
+		System.out.println(listAllOrders);
+		if(listAllOrders.size()!=0)
+			return new ResponseEntity<List<Orders>>(listAllOrders, HttpStatus.OK);
+		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	}
+	
+	@GetMapping("/order/list")
+	private ResponseEntity<?> allOrders()
+	{
+		List<Orders> allOrders = service.allOrders();
+		if(allOrders.size()!=0)
+			return new ResponseEntity<List<Orders>>(allOrders,HttpStatus.OK);
+		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 //	@GetMapping("/logout")
 //	public String logMeOut(HttpSession hs, Model map, HttpServletRequest request, HttpServletResponse response) {
 //		System.out.println("in user logout");

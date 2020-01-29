@@ -13,19 +13,20 @@ import javax.persistence.ManyToOne;
 public class Orders {
 	
 	private Integer id;
-//	private int user_id;
 	private int build_id;
 	private float oprice;
 	private Date placed_date;
 	private Date delivery_date;
 	private String status;
+	private String paymentMode;
+	private int qty; 
 	private Users user;
 	
 	public Orders() {
 
 	}
 
-	public Orders(Integer id, int build_id, float oprice, Date placed_date, Date delivery_date, String status) {
+	public Orders(Integer id, int build_id, float oprice, Date placed_date, Date delivery_date, String status, String paymentMode, int qty) {
 		super();
 		this.id = id;
 		this.build_id = build_id;
@@ -33,6 +34,8 @@ public class Orders {
 		this.placed_date = placed_date;
 		this.delivery_date = delivery_date;
 		this.status = status;
+		this.paymentMode=paymentMode;
+		this.qty=qty;
 	}
 
 	@Id
@@ -88,6 +91,22 @@ public class Orders {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public String getPaymentMode() {
+		return paymentMode;
+	}
+
+	public void setPaymentMode(String paymentMode) {
+		this.paymentMode = paymentMode;
+	}
+
+	public int getQty() {
+		return qty;
+	}
+
+	public void setQty(int qty) {
+		this.qty = qty;
 	}
 
 	@Override

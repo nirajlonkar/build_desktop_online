@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.app.pojos.ComponentType;
 import com.app.pojos.Components;
+import com.app.pojos.Orders;
 import com.app.pojos.Users;
 
 @Repository
@@ -57,6 +58,19 @@ public class AdminDaoImpl implements IAdminDao {
 		String jpql = "select c from Components c where c.type=:type";
 		return sf.getCurrentSession().createQuery(jpql,Components.class).setParameter("type", typeEnum).getResultList();
 	}
+	@Override
+	public String updateStatus(Orders old) {
+		System.out.println("in edit dao");
+		old.setStatus("DELIVERED");
+		sf.getCurrentSession().update(old);	
+		System.out.println("edit update");
+		return "Status Changed";
+	}
+	@Override
+	public Orders orderById(int id) {
+		String jpql = "select o from Orders o where o.id=:id";
+		return sf.getCurrentSession().createQuery(jpql,Orders.class).setParameter("id", id).getSingleResult();
+	}
 	
-
+	
 }

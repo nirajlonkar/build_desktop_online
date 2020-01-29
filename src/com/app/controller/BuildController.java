@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,8 +39,11 @@ public class BuildController {
 			System.out.println(id);
 			Users u = uservice.getById(id);
 			System.out.println(u);
+			System.out.println(b);
 			u.addBuild(b);
-			return new ResponseEntity<Builds>(service.newBuild(u),HttpStatus.CREATED);
+			String build = service.newBuild(u);
+			System.out.println(build);
+			return new ResponseEntity<String>(build,HttpStatus.CREATED);
 		} 
 		catch (RuntimeException e) {
 			e.printStackTrace();
@@ -59,10 +63,27 @@ public class BuildController {
 	@GetMapping("/list/{id}")
 	private ResponseEntity<List<Builds>> getBuildById(@PathVariable int id)
 	{
-		List<Builds> buildList = service.getBuildById(id);
+		List<Builds> buildList= service.getBuildById(id);
 		if(buildList.size()!=0)
 			return new ResponseEntity<List<Builds>>(buildList,HttpStatus.OK);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
+	@DeleteMapping("/{id}/{uid}")
+	private void deleteBuild(@PathVariable int id, @PathVariable int uid)
+	{
+		System.out.println("in delete of build");
+		service.deleteBuild(id,uid);
+	}
+	
+	@GetMapping("/{id}")
+	public ResponseEntity<?> buildById(@PathVariable int id)
+	{
+		System.err.println("in get build by id");
+		Builds b = service.getBuild(id);
+		if(b!=null)
+			return new ResponseEntity<Builds>(b,HttpStatus.OK);
+		return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+		
 	}
 
 }

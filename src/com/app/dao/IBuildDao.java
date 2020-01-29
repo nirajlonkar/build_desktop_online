@@ -7,7 +7,9 @@ import com.app.pojos.Users;
 
 public interface IBuildDao {
 
-	Builds makeBuild(Users u);
+	String makeBuild(Users u);
 	List<Builds> listAllBuilds();
-	List<Builds> listBuildById(int id);
+	void delete(Builds b);
+	List<Builds> listBuildByUserId(int id);
+	Builds buildById(int id);
 }

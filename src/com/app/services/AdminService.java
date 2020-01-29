@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.app.dao.IAdminDao;
 import com.app.pojos.Components;
+import com.app.pojos.Orders;
 import com.app.pojos.Users;
 
 @Service
@@ -59,6 +60,19 @@ public class AdminService implements IAdminService {
 	public List<Components> getCompByType(String type) {
 		List<Components> listComp = dao.listByType(type);
 		return listComp;
+	}
+
+	@Override
+	public String updateStatus(int id) {
+		Orders o = dao.orderById(id);
+		String a = dao.updateStatus(o);
+		return a;
+	}
+
+	@Override
+	public Components getCompDetails(int id) {
+		Components c = dao.compById(id);
+		return c;
 	}
 	
 	

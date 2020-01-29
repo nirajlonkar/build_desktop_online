@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.app.pojos.Components;
+import com.app.pojos.Orders;
 import com.app.pojos.Users;
 import com.app.services.IAdminService;
 
@@ -100,6 +101,25 @@ public class AdminController {
 		System.out.println("c");
 		if(c!=null)
 			return new ResponseEntity<Components>(HttpStatus.OK);
+		return new ResponseEntity<Void>(HttpStatus.NOT_MODIFIED);
+	}
+	
+	@GetMapping("/component/{id}")
+	public ResponseEntity<?> compDetailsById(@PathVariable int id)
+	{
+		Components c = service.getCompDetails(id);
+		if(c!=null)
+			return new ResponseEntity<Components>(HttpStatus.OK);
+		return new ResponseEntity<Void>(HttpStatus.NOT_MODIFIED);
+	}
+	
+	@PutMapping("/order/{id}")
+	public ResponseEntity<?> updateDeliveryStatus(@PathVariable int id,@RequestBody Orders o)
+	{
+		System.out.println("in update status");
+		String a = service.updateStatus(id);
+		if(a!=null)
+			return new ResponseEntity<>(HttpStatus.OK);
 		return new ResponseEntity<Void>(HttpStatus.NOT_MODIFIED);
 	}
 }

@@ -14,5 +14,6 @@ public interface IAdminService {
 	Components getById(int id);
 	void deleteComponent(int id);
 	Components editComp(Components c, int id);
-	
+	String updateStatus(int id);
+	Components getCompDetails(int id);
 }
